@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+model User {
+  id       String @id @default(uuid()) //uuid is a long automatically generated string that haas a very low probability of being same with some other stringn its a common way of storing id in databases
+  email    String @unique
+  name     String?
+  password String
+  posts    Post[]
+}
+
+model Post {
+  id        String  @id @default(uuid())
+  title     String
+  content   String
+  published Boolean @default(false)
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+}
